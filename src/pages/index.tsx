@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useAsyncEffect } from 'rooks';
 import sequential from 'promise-sequential';
 const md = require('markdown-it')();
 import { Hero, Section } from '../components';
 import { getRandomImagePosition, imageHitsPlacedImages } from '@/helpers';
 import { useApi } from '@/hooks/useApi';
+import Image from 'next/image';
 
 export const Home = () => {
-  const { get, BASE_URL } = useApi();
+  const { get } = useApi();
   const [videos, setVideos] = useState([]);
   const [sections, setSections] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
@@ -22,7 +23,9 @@ export const Home = () => {
   }
 
   useAsyncEffect(async () => {
-    const data: any = get('home-page');
+    const data: any = await get('home-page');
+
+    if (!data.hero) return;
 
     const newVideos = data.hero.data.map(({ url }: any) => url)
     setVideos(newVideos);
@@ -37,7 +40,7 @@ export const Home = () => {
 
     const newSections: any = data.content ? (await Promise.all(data.content.split('___').map(async (content: any) => {
       if (content?.includes('[gallery]')) {
-        const { images, galleryHeight } = await createGallery(imageUrls, this.$breakpoints.current)
+        const { images, galleryHeight } = await createGallery(imageUrls)
 
         return {
           gallery: true,
@@ -89,6 +92,8 @@ export const Home = () => {
       return {
         smallUrl,
         largeUrl,
+        width: image.width,
+        height: image.height,
         style: {
           position: 'absolute',
           maxWidth: image.width + 'px',
@@ -126,7 +131,12 @@ export const Home = () => {
                       style={image.style}
                       onClick={() => previewImage(imageIndex)}
                     >
-                      <img src={`gallery__item__image ${BASE_URL + (selectedImageIndex === index ? image.largeUrl : image.smallUrl)}`} />
+                      <Image
+                        className={'gallery__item__image'}
+                        src={selectedImageIndex === index ? image.largeUrl : image.smallUrl}
+                        width={image.width}
+                        height={image.height}
+                      />
                     </div>
                   )) }
                 </div>
@@ -142,3 +152,5 @@ export const Home = () => {
     </div>
   )
 }
+
+export default Home;

@@ -1,28 +1,47 @@
-import useAxios from 'axios-hooks';
 import { formatResponse } from "@/helpers"
 import axios from 'axios';
+import to from 'await-to-js';
 
 export const useApi = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`;
 
   const get = async (path: any) => {
-    try {
-      const { data } = await axios.get(`${BASE_URL}/${path}?populate=%2A`);
+    const [getError, getSuccess] = await to(
+      axios.get(
+        `${BASE_URL ? `${BASE_URL}/` : ''}${path}?populate=%2A`,
+        {
+          headers: {
+            'Authorization': `bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+          }
+        }
+      )
+    );
 
-      return formatResponse(data).data;
-    } catch (err) {
-      throw err
+    if (getError) {
+      throw getError
     }
+
+    return formatResponse(getSuccess.data).data;
   }
 
   const post = async (path: any, payload: any) => {
-    try {
-      const { data } = await axios.post(`${BASE_URL}/${path}`, payload);
+    const [postError, postSuccess] = await to(
+      axios.post(
+        `${BASE_URL}/${path}`,
+        payload,
+        {
+          headers: {
+            'Authorization': `bearer ${process.env.NEXT_PUBLIC_API_KEY}`
+          }
+        }
+      )
+    );
 
-      return formatResponse(data);
-    } catch (err) {
-      throw err
+    if (postError) {
+      throw postError
     }
+
+    return formatResponse(postSuccess.data).data;
   }
 
   return {
