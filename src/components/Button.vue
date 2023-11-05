@@ -1,0 +1,104 @@
+<template>
+  <component
+    :is="to ? 'router-link' : 'button'"
+    :to="to"
+    :type="type"
+    :value="value"
+    :class="{
+      'button': true,
+      'button--block': block,
+      'button--disabled': disabled,
+      [`button--${size}`]: size,
+      [`button--${state}`]: state,
+    }"
+    @click="!to && $emit('click')"
+  >
+    <slot />
+  </component>
+</template>
+
+<script>
+export default {
+  props: {
+    block: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: 'button'
+    },
+    value: {
+      type: String,
+      default: 'button'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      type: String,
+      default: 'm'
+    },
+    state: {
+      type: String
+    },
+    to: {
+      type: String
+    },
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.button {
+  border: 0;
+  outline: 0;
+  border: 1px solid $primary;
+  background-color: transparent;
+  color: $primary;
+  border-radius: 1px;
+  text-decoration: none;
+  user-select: none;
+
+  &:hover {
+    background-color: $primary;
+    color: $white;
+  }
+
+  &--block {
+    display: block;
+    text-align: center;
+    width: 100%;
+  }
+
+  &--disabled {
+    opacity: .6;
+    pointer-events: none;
+  }
+
+  &--success {
+    background-color: $success !important;
+    border-color: $success !important;
+    color: $white !important;
+  }
+
+  &--success {
+    background-color: $danger !important;
+    border-color: $danger !important;
+    color: $white !important;
+  }
+
+  &--s {
+    padding: calc($spacer * .25) calc($spacer * .75);
+  }
+
+  &--m {
+    padding: calc($spacer * .5) calc($spacer * 1);
+  }
+
+  &--l {
+    padding: calc($spacer * .75) calc($spacer * 1).5;
+  }
+}
+</style>

@@ -3,11 +3,11 @@ import { formatResponse } from "@/helpers"
 import axios from 'axios';
 
 export const useApi = () => {
-  const API_URL = process.env.nodeEnv === 'dev' ? process.env.apiBaseUrl : ''
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const get = async (path: any) => {
     try {
-      const { data } = await axios.get(`${API_URL}/${path}?populate=%2A`);
+      const { data } = await axios.get(`${BASE_URL}/${path}?populate=%2A`);
 
       return formatResponse(data).data;
     } catch (err) {
@@ -17,7 +17,7 @@ export const useApi = () => {
 
   const post = async (path: any, payload: any) => {
     try {
-      const { data } = await axios.post(`${API_URL}/${path}`, payload);
+      const { data } = await axios.post(`${BASE_URL}/${path}`, payload);
 
       return formatResponse(data);
     } catch (err) {
@@ -26,6 +26,7 @@ export const useApi = () => {
   }
 
   return {
+    BASE_URL,
     get,
     post,
   }

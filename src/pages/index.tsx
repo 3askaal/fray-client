@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useAsyncEffect } from 'rooks';
 import sequential from 'promise-sequential';
 const md = require('markdown-it')();
 import { Hero, Section } from '../components';
@@ -6,22 +7,25 @@ import { getRandomImagePosition, imageHitsPlacedImages } from '@/helpers';
 import { useApi } from '@/hooks/useApi';
 
 export const Home = () => {
-  const { get } = useApi();
+  const { get, BASE_URL } = useApi();
+  const [videos, setVideos] = useState([]);
+  const [sections, setSections] = useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const bodyRef: any = useRef()
 
-  const baseUrl = '';
-  const selectedImageIndex = 0;
-  const videos: any[] = [];
-  const blocks: any[] = [];
+  const previewImage = (index: number) => {
+    setSelectedImageIndex(index);
+  }
 
-  const previewImage = (...props: any) => {}
-  const clearPreviewImage = (...props: any) => {}
+  const clearPreviewImage = () => {
+    setSelectedImageIndex(null);
+  }
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     const data: any = get('home-page');
 
-    const videos = data.hero.data.map(({ url }: any) => url)
-    const content = data.content
+    const newVideos = data.hero.data.map(({ url }: any) => url)
+    setVideos(newVideos);
 
     let imageUrls = data.gallery?.data?.map(({ formats }: any) => {
       return {
@@ -31,9 +35,9 @@ export const Home = () => {
     }) || [];
 
 
-    const blocks = data.content ? Promise.all(data.content.split('___').map(async (content: any) => {
+    const newSections: any = data.content ? (await Promise.all(data.content.split('___').map(async (content: any) => {
       if (content?.includes('[gallery]')) {
-        const { images, galleryHeight } = (await createGallery(this.imageUrls, this.$breakpoints.current))
+        const { images, galleryHeight } = await createGallery(imageUrls, this.$breakpoints.current)
 
         return {
           gallery: true,
@@ -43,7 +47,9 @@ export const Home = () => {
       }
 
       return md.render(content || '')
-    })) : [];
+    }))) : [];
+
+    setSections(newSections)
   }, [])
 
   const createGallery = async (imageUrls: any) => {
@@ -105,28 +111,28 @@ export const Home = () => {
       { !!videos.length && <Hero videos={videos} /> }
       <div className="wrapper">
         <div ref={bodyRef}>
-          { blocks.map((block: any, index: number) => (
-            <Section key={index} className={block.type}>
-              { block.gallery ? (
+          { sections.map((section: any, index: number) => (
+            <Section key={index} className={section.type}>
+              { section.gallery ? (
                 <div
                   className={`gallery ${selectedImageIndex !== null ? 'gallery--selected' : ''}`}
-                  style={{ height: `${block.height}px` }}
+                  style={{ height: `${section.height}px` }}
                 >
                   <div className="gallery__backdrop" onClick={() => clearPreviewImage()} />
-                  { block.images.map((image: any, imageIndex: number) => (
+                  { section.images.map((image: any, imageIndex: number) => (
                     <div
                       key={`image-${index}`}
                       className={`gallery__item ${selectedImageIndex === index ? 'gallery__item--selected' : ''}`}
                       style={image.style}
                       onClick={() => previewImage(imageIndex)}
                     >
-                      <img src={`gallery__item__image ${baseUrl + (selectedImageIndex === index ? image.largeUrl : image.smallUrl)}`} />
+                      <img src={`gallery__item__image ${BASE_URL + (selectedImageIndex === index ? image.largeUrl : image.smallUrl)}`} />
                     </div>
                   )) }
                 </div>
               ) : (
                 <div className="container--text container--center body body--center spacer">
-                  { block }
+                  { section }
                 </div>
               )}
             </Section>
