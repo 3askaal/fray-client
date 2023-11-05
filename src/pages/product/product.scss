@@ -1,0 +1,32 @@
+.product {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 600px;
+  padding-bottom: 4rem;
+}
+
+.product__details {
+  > * + * {
+    margin-top: $spacer;
+  }
+}
+
+.product__carousel {
+  margin-bottom: 3rem;
+}
+
+.product__price {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: $subtle;
+}
+
+.product__description {
+  margin-bottom: 2rem;
+}
+
+.custom-select {
+  width: auto;
+  background-color: transparent;
+}

@@ -1,0 +1,11 @@
+.contact {
+  .row {
+    > * {
+      margin-bottom: $spacer;
+
+      p {
+        margin-bottom: calc($spacer * .5);
+      }
+    }
+  }
+}
