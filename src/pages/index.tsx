@@ -7,6 +7,8 @@ import { getRandomImagePosition, imageHitsPlacedImages } from '@/helpers';
 import { useApi } from '@/hooks/useApi';
 import Image from 'next/image';
 
+import './index.scss';
+
 export const Home = () => {
   const { get } = useApi();
   const [videos, setVideos] = useState([]);
@@ -40,12 +42,14 @@ export const Home = () => {
 
     const newSections: any = data.content ? (await Promise.all(data.content.split('___').map(async (content: any) => {
       if (content?.includes('[gallery]')) {
-        const { images, galleryHeight } = await createGallery(imageUrls)
+        const gallery = await createGallery(imageUrls)
+
+        if (!gallery) return;
 
         return {
           gallery: true,
-          images: images.filter((image) => image !== null),
-          height: galleryHeight
+          images: gallery.images.filter((image) => image !== null),
+          height: gallery.height
         }
       }
 
@@ -56,6 +60,8 @@ export const Home = () => {
   }, [])
 
   const createGallery = async (imageUrls: any) => {
+    if (!bodyRef.current) return;
+
     let galleryWidth = Math.round(bodyRef.current.getBoundingClientRect().width)
     let galleryHeight = 500
     let offsetY = 0
@@ -107,7 +113,7 @@ export const Home = () => {
 
     return {
       images,
-      galleryHeight
+      height: galleryHeight
     }
   }
 
@@ -142,9 +148,7 @@ export const Home = () => {
                   )) }
                 </div>
               ) : (
-                <div className="container--text container--center body body--center spacer">
-                  { section }
-                </div>
+                <div className="container--text container--center body body--center spacer" dangerouslySetInnerHTML={{ __html: section }} />
               )}
             </Section>
           )) }

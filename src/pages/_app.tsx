@@ -1,5 +1,11 @@
+import { Header } from '@/components'
 import './app.scss'
 
 export default function MyApp({ Component, pageProps }: any) {
-  return <Component {...pageProps} />
+  return (
+    <>
+      <Header />
+      <Component {...pageProps} />
+    </>
+  )
 }

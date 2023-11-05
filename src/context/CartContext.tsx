@@ -8,7 +8,7 @@ export interface CartContextType {
 export const CartContext = createContext<CartContextType>({})
 
 export const CartProvider = ({ children }: any) => {
-  const [products, setProducts] = useSessionstorageState<any>('cart', null);
+  const [products, setProducts] = useSessionstorageState<any>('cart', []);
 
   const add = ({ product, size }: any) => {
     const newProducts = [
