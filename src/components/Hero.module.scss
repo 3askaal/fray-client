@@ -1,0 +1,59 @@
+.hero--wrapper {
+  position: relative;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hero {
+  height: 100%;
+  width: 100%;
+
+  &--fullscreen {
+    position: fixed;
+    z-index: 1000;
+  }
+}
+
+.hero__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  opacity: .6;
+  filter: grayscale(1);
+
+  .hero--fullscreen & {
+    transition: all .4s ease;
+    filter: grayscale(0);
+    opacity: 1;
+  }
+}
+
+.hero__footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+
+  .hero--fullscreen & {
+    justify-content: space-between;
+  }
+
+  button {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 1rem;
+  }
+
+  svg {
+    stroke: $black;
+  }
+}

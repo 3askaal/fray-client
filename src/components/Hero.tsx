@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Play, Pause, CaretLeft, CaretRight, Fullscreen, FullscreenExit } from 'react-bootstrap-icons';
 import videojs from 'video.js'
 import { useApi } from '@/hooks/useApi';
+import style from './Section.module.scss'
 
 export const Hero = ({ videos }: any) => {
   const { BASE_URL } = useApi()
@@ -12,10 +13,18 @@ export const Hero = ({ videos }: any) => {
   const videoRef: any = useRef(null);
   const playerRef: any = useRef(null);
 
+  useEffect(() => {
+    init()
+  }, [playerRef.current])
+
   const init = () => {
-    if (!playerRef.current) {
-      playerRef.current = videojs(videoRef.current);
-    }
+    if (playerRef.current) return
+    if (!videoRef.current) return
+
+    console.log('playerRef.current: ', playerRef.current);
+    console.log('videoRef.current: ', videoRef.current);
+
+    playerRef.current = videojs(videoRef.current);
 
     playerRef.current.src({ src: `${BASE_URL}${videos[currentIndex]}`, type: 'video/webm' });
     playerRef.current.play();
@@ -56,7 +65,7 @@ export const Hero = ({ videos }: any) => {
           { !!isFullScreen && (
             <>
               <Button onClick={toggle} v-if="isFullScreen">
-                { isPaused ? <Play font-scale="1.75" v-if="isPaused" /> : <Pause font-scale="1.75" v-else /> }
+                { isPaused ? <Play font-scale="1.75" /> : <Pause font-scale="1.75" /> }
               </Button>
               <div className="hero__footer__navigate">
                 <Button onClick={() => navigate(-1)} disabled={currentIndex === 0}>
@@ -69,8 +78,7 @@ export const Hero = ({ videos }: any) => {
             </>
           ) }
           <Button onClick={() => setIsFullScreen(!isFullScreen)}>
-            <Fullscreen font-scale="1.25" v-if="!isFullScreen" />
-            <FullscreenExit font-scale="1.25" v-else />
+            { !isFullScreen ? <Fullscreen font-scale="1.25" /> : <FullscreenExit font-scale="1.25" /> }
           </Button>
         </div>
       </div>

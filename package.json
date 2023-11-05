@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/classnames": "^2.3.1",
+    "@types/lodash": "^4.14.200",
     "@types/promise-sequential": "^1.1.1",
     "await-to-js": "^3.0.0",
     "axios": "^1.6.0",
@@ -26,6 +27,7 @@
     "react-bootstrap-icons": "^1.10.3",
     "react-dom": "^18",
     "rooks": "^7.14.1",
+    "sass": "^1.69.5",
     "video.js": "^8.6.1"
   },
   "devDependencies": {

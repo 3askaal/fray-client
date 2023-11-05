@@ -1,56 +1,3 @@
-<template>
-  <component
-    :is="to ? 'router-link' : 'button'"
-    :to="to"
-    :type="type"
-    :value="value"
-    :class="{
-      'button': true,
-      'button--block': block,
-      'button--disabled': disabled,
-      [`button--${size}`]: size,
-      [`button--${state}`]: state,
-    }"
-    @click="!to && $emit('click')"
-  >
-    <slot />
-  </component>
-</template>
-
-<script>
-export default {
-  props: {
-    block: {
-      type: Boolean,
-      default: false
-    },
-    type: {
-      type: String,
-      default: 'button'
-    },
-    value: {
-      type: String,
-      default: 'button'
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    size: {
-      type: String,
-      default: 'm'
-    },
-    state: {
-      type: String
-    },
-    to: {
-      type: String
-    },
-  }
-}
-</script>
-
-<style lang="scss" scoped>
 .button {
   border: 0;
   outline: 0;
@@ -101,4 +48,3 @@ export default {
     padding: calc($spacer * .75) calc($spacer * 1).5;
   }
 }
-</style>

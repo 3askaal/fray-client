@@ -133,6 +133,7 @@ export const Home = () => {
                     >
                       <Image
                         className={'gallery__item__image'}
+                        alt={image.smallUrl}
                         src={selectedImageIndex === index ? image.largeUrl : image.smallUrl}
                         width={image.width}
                         height={image.height}
