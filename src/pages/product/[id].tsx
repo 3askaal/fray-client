@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { Carousel, CarouselItem, Col, Form, Row } from 'react-bootstrap';
+import { useContext, useState } from 'react';
+import { Carousel, Form } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { Check, Plus } from 'react-bootstrap-icons';
 import to from 'await-to-js';
@@ -57,19 +57,19 @@ export const Product = () => {
       <div className="product__details">
         <h3 className="product__title">{ product.title }</h3>
         <p className="product__price">&euro;{ product.price }</p>
-        <Form.Select value={selectedSize} onChange={(value) => setSelectedSize(value)}>
+        <Form.Select onChange={(event) => setSelectedSize(event.target.value)}>
           { sizeOptions.map((option) => (
             <option key={option.value} value={option.value || ''}>{ option.text }</option>
           )) }
         </Form.Select>
-        <p className="product__description body" v-html="product.description" />
+        <div className="product__description body" dangerouslySetInnerHTML={{ __html: product.description }} />
         <Button
           onClick={() => add({ product, size: selectedSize }) }
           state={productInCart ? 'success' : !selectedSize ? 'disabled' : null}
           disabled={productInCart}
         >
           { productInCart ? 'Added to cart' : 'Add to cart' }
-          { productInCart ? <Check v-if="productInCart" /> : <Plus v-else /> }
+          { productInCart ? <Check /> : <Plus /> }
         </Button>
       </div>
     </div>

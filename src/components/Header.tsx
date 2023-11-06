@@ -17,13 +17,13 @@ export const Header = () => {
       <div className={style['header__nav']}>
         <Link href="/shop" className={style['header__nav__item']}>Shop</Link>
         <Link href="/contact" className={style['header__nav__item']}>Contact</Link>
-        <Link href="/cart" className={`${style['header__nav__item']} ${ products?.length ? style.headerNavItemActive : ''}`}>
+        <Link href="/cart" className={`${style['header__nav__item']} ${ products?.length ? style['header__nav__item--active'] : ''}`}>
           <Cart />
-          { !!products?.length && (
+          { products?.length ? (
             <span className={style['header__nav__item__indicator']}>
               { products.length }
             </span>
-          ) }
+          ) : null }
         </Link>
       </div>
     </div>

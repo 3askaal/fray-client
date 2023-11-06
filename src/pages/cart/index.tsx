@@ -18,7 +18,7 @@ export const Cart = () => {
           { products?.length ? products.map((product: any) => (
             <Row className="cart__products__product" key={product.title}>
               <Col cols="3">
-                <a href={`/product/${product.id}`}>
+                {/* <a href={`/product/${product.id}`}> */}
                   <Carousel
                     controls={product.image.data.length > 1}
                     interval={null}
@@ -29,7 +29,7 @@ export const Cart = () => {
                       </Carousel.Item>
                     ))}
                   </Carousel>
-                </a>
+                {/* </a> */}
               </Col>
               <Col cols="9">
                 <div className="cart__products__product__title">
@@ -59,7 +59,7 @@ export const Cart = () => {
       </div>
 
       { !!products?.length && (
-        <Row className="justify-content-end" v-if="products.length">
+        <Row className="justify-content-end">
           <Col cols="5">
             <div className="d-flex justify-content-between mb-4">
               <p><strong>Subtotal:</strong></p>

@@ -60,7 +60,7 @@ export const Hero = ({ videos }: any) => {
         <div className={style['hero__footer']}>
           { !!isFullScreen && (
             <>
-              <Button onClick={toggle} v-if="isFullScreen">
+              <Button onClick={toggle}>
                 { isPaused ? <Play font-scale="1.75" /> : <Pause font-scale="1.75" /> }
               </Button>
               <div className={style['hero__footer__navigate']}>

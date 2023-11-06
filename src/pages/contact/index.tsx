@@ -88,18 +88,17 @@ export const Contact = () => {
           <h3>Commissions</h3>
           <div className="contact__form">
             <Row>
-              <Col cols="6">
+              <Col xs={6}>
                 <p>Name</p>
                 <Form.Control name="name" onChange={(event) => setCommissionInfo({ ...commissionInfo, name: event.target.value })} />
               </Col>
-              <Col cols="6">
+              <Col xs={6}>
                 <p>Email</p>
                 <Form.Control name="email" onChange={(event) => setCommissionInfo({ ...commissionInfo, email: event.target.value })} />
               </Col>
-
-              <Col cols="12">
+              <Col xs={12}>
                 <p>Message</p>
-                <Form.Text as="textarea" rows={5} name="message" onChange={(event) => setCommissionInfo({ ...commissionInfo, message: event.target.value })} />
+                <Form.Control as="textarea" rows={5} name="message" onChange={(event) => setCommissionInfo({ ...commissionInfo, message: event.target.value })} />
               </Col>
             </Row>
             <Row className="justify-content-end">

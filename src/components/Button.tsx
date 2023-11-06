@@ -2,7 +2,7 @@ import Link from "next/link"
 import cl from 'classnames';
 import style from './Button.module.scss'
 
-export const Button = ({ children, to, block, disabled, size, state,type, onClick }: any) => {
+export const Button = ({ children, to, block, disabled, type, state, size = 'm', onClick }: any) => {
   const className = cl({
     [style['button']]: true,
     [style['button--block']]: block,
