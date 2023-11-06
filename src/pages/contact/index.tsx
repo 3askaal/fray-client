@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row, Stack } from 'react-bootstrap';
 import { EnvelopeFill, Instagram, TelephoneFill } from 'react-bootstrap-icons';
 import isEmail from 'validator/lib/isEmail';
 import to from 'await-to-js';
@@ -59,9 +59,24 @@ export const Contact = () => {
         <div className="spacer mt-5">
           <div>
             <ul>
-              <li><Instagram className="mr-2" /><a href="https://instagram.com/frayamsterdam">@frayamsterdam</a></li>
-              <li><TelephoneFill className="mr-2" /><a href="tel:0634042924">0634042924</a></li>
-              <li><EnvelopeFill className="mr-2" /><a href="mailto:frayamsterdam@gmail.com">frayamsterdam@gmail.com</a></li>
+              <li>
+                <Stack direction="horizontal" gap={2}>
+                  <Instagram />
+                  <a href="https://instagram.com/frayamsterdam">@frayamsterdam</a>
+                </Stack>
+              </li>
+              <li>
+                <Stack direction="horizontal" gap={2}>
+                  <TelephoneFill />
+                  <a href="tel:0634042924">0634042924</a>
+                </Stack>
+              </li>
+              <li>
+                <Stack direction="horizontal" gap={2}>
+                  <EnvelopeFill />
+                  <a href="mailto:frayamsterdam@gmail.com">frayamsterdam@gmail.com</a>
+                </Stack>
+              </li>
             </ul>
           </div>
 
@@ -102,7 +117,7 @@ export const Contact = () => {
               </Col>
             </Row>
             <Row className="justify-content-end">
-              <Col cols="5">
+              <Col xs="5">
                 <Button
                   block
                   type="submit"

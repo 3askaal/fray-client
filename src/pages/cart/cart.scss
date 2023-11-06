@@ -14,6 +14,10 @@
 .cart__products__product {
   display: flex;
 
+  img {
+    width: 100%;
+  }
+
   + .cart__products__product {
     margin-top: calc($spacer * 3);
   }

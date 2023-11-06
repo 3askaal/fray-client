@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react'
-import { useSessionstorageState } from 'rooks';
+import { pull } from 'lodash';
+import React, { createContext, useEffect, useState } from 'react'
 
 export interface CartContextType {
   [key: string]: any;
@@ -8,7 +8,19 @@ export interface CartContextType {
 export const CartContext = createContext<CartContextType>({})
 
 export const CartProvider = ({ children }: any) => {
-  const [products, setProducts] = useSessionstorageState<any>('cart', []);
+  const [products, setProductsState] = useState<any>([]);
+
+  useEffect(() => {
+    let newProducts = sessionStorage.getItem('cart');
+    if (!newProducts) return;
+
+    setProductsState(JSON.parse(newProducts));
+  }, [])
+
+  const setProducts = (data: any) => {
+    sessionStorage.setItem('cart', JSON.stringify(data));
+    setProductsState(() => data);
+  }
 
   const add = ({ product, size }: any) => {
     const newProducts = [
@@ -51,9 +63,9 @@ export const CartProvider = ({ children }: any) => {
 
   const remove = (productId: any) => {
     const item = products.find(({ id }: any) => id === productId);
-    const newProducts = products.splice(products.indexOf(item), 1);
+    const newProducts = pull(products, item)
 
-    setProducts(newProducts);
+    setProducts([...newProducts]);
   }
 
   return (
@@ -61,8 +73,6 @@ export const CartProvider = ({ children }: any) => {
       value={{
         products,
         add,
-        increase,
-        decrease,
         remove
       }}
     >

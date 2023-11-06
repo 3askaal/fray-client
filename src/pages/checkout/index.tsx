@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Row, Stack } from 'react-bootstrap';
 import { loadStripe } from '@stripe/stripe-js';
 import to from 'await-to-js';
 import isEmail from 'validator/lib/isEmail';
@@ -82,38 +82,38 @@ export const Checkout = () => {
     <div className="checkout mt-5">
       <div className="checkout__form">
         <Row>
-          <Col cols="6">
+          <Col xs="6">
             <p>First Name</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
           </Col>
-          <Col cols="6">
+          <Col xs="6">
             <p>Last Name</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
           </Col>
 
-          <Col cols="6">
+          <Col xs="6">
             <p>Street Address</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
           </Col>
-          <Col cols="6">
+          <Col xs="6">
             <p>House Number</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
           </Col>
 
-          <Col cols="6">
+          <Col xs="6">
             <p>Postal Code</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
           </Col>
-          <Col cols="6">
+          <Col xs="6">
             <p>Country</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
           </Col>
 
-          <Col cols="6">
+          <Col xs="6">
             <p>Email</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
           </Col>
-          <Col cols="6">
+          <Col xs="6">
             <p>Phone Number</p>
             <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
           </Col>
@@ -123,28 +123,29 @@ export const Checkout = () => {
 
       { products.length && (
         <Row className="justify-content-end">
-          <Col cols="5">
-            <div className="d-flex justify-content-between mb-4">
-              <p><strong>Subtotal:</strong></p>
-              <p><strong>{ subTotal() }</strong></p>
-            </div>
-
-            { !!(!customerInfo.country.length || !isInternational) ? (
-              <div className="d-flex justify-content-between mb-4">
-                <p><strong>Shipping:</strong></p>
-                <p><strong>{ shipping }</strong></p>
+          <Col xs="5">
+            <Stack gap={4}>
+              <div className="d-flex justify-content-between">
+                <p><strong>Subtotal:</strong></p>
+                <p><strong>{ subTotal() }</strong></p>
               </div>
-            ) : (
-              <div className="d-flex justify-content-between mb-4">
-                <p>We don't support international shipping via the website yet.<br />Please contact us if you want to order outside of the Netherlands.</p>
+
+              { !!(!customerInfo.country.length || !isInternational) ? (
+                <div className="d-flex justify-content-between">
+                  <p><strong>Shipping:</strong></p>
+                  <p><strong>{ shipping }</strong></p>
+                </div>
+              ) : (
+                <div className="d-flex justify-content-between">
+                  <p>We don't support international shipping via the website yet.<br />Please contact us if you want to order outside of the Netherlands.</p>
+                </div>
+              ) }
+
+              <div className="d-flex justify-content-between">
+                <p><strong>Total:</strong></p>
+                <p><strong>{ total() }</strong></p>
               </div>
-            ) }
-
-            <div className="d-flex justify-content-between mb-4">
-              <p><strong>Total:</strong></p>
-              <p><strong>{ total() }</strong></p>
-            </div>
-
+            </Stack>
             <Button block={true} disabled={!isValid} variant="primary" className="checkout__submit" onClick={submit}>Checkout</Button>
           </Col>
         </Row>

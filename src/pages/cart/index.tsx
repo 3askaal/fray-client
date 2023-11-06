@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import Link from 'next/link';
-import { Carousel, Col, Row } from 'react-bootstrap';
+import { Carousel, Col, Row, Stack } from 'react-bootstrap';
 
 import { CartContext } from '@/context/CartContext';
 import { Button } from '@/components';
@@ -17,7 +17,7 @@ export const Cart = () => {
         <div className="container">
           { products?.length ? products.map((product: any) => (
             <Row className="cart__products__product" key={product.title}>
-              <Col cols="3">
+              <Col xs="3">
                 {/* <a href={`/product/${product.id}`}> */}
                   <Carousel
                     controls={product.image.data.length > 1}
@@ -31,7 +31,7 @@ export const Cart = () => {
                   </Carousel>
                 {/* </a> */}
               </Col>
-              <Col cols="9">
+              <Col xs="9">
                 <div className="cart__products__product__title">
                   <a href={`/product/${product.id}`}>{ product.title }</a>
                 </div>
@@ -60,13 +60,15 @@ export const Cart = () => {
 
       { !!products?.length && (
         <Row className="justify-content-end">
-          <Col cols="5">
-            <div className="d-flex justify-content-between mb-4">
-              <p><strong>Subtotal:</strong></p>
-              <p><strong>{ subTotal }</strong></p>
-            </div>
+          <Col xs="5">
+            <Stack gap={4}>
+              <div className="d-flex justify-content-between">
+                <p><strong>Subtotal:</strong></p>
+                <p><strong>{ subTotal }</strong></p>
+              </div>
 
-            <Button to="checkout" block className="cart__submit">Go to checkout</Button>
+              <Button to="checkout" block className="cart__submit">Go to checkout</Button>
+            </Stack>
           </Col>
         </Row>
       )}

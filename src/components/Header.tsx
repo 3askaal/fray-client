@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Cart } from 'react-bootstrap-icons';
 import { CartContext } from "@/context/CartContext";
 import style from './Header.module.scss'
+import classNames from "classnames";
 
 export const Header = () => {
   const { products }: any = useContext(CartContext);
@@ -20,7 +21,7 @@ export const Header = () => {
         <Link href="/cart" className={`${style['header__nav__item']} ${ products?.length ? style['header__nav__item--active'] : ''}`}>
           <Cart />
           { products?.length ? (
-            <span className={style['header__nav__item__indicator']}>
+            <span className={classNames(style['header__nav__item__indicator'])}>
               { products.length }
             </span>
           ) : null }
