@@ -21,7 +21,7 @@ export const Cart = () => {
                 <a href={`/product/${product.id}`}>
                   <Carousel
                     controls={product.image.data.length > 1}
-                    interval={0}
+                    interval={null}
                   >
                     { product.image.data.map((image: any) => (
                       <Carousel.Item key={`slide-${image.url}`}>

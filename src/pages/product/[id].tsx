@@ -21,31 +21,33 @@ export const Product = () => {
   const [product, setProduct] = useState<any>({});
   const [selectedSize, setSelectedSize] = useState<any>(null);
 
-  const productInCart = products.find(({ id }: any) => id === product?.id)
+  const productInCart = products?.find(({ id }: any) => id === product?.id);
   const sizeOptions = product ? [
     { value: null, text: '-' },
-    ...Object.keys(product.sizes).map((key) => ({ text: key, value: key }))
+    ...Object.keys(product?.sizes || {}).map((key) => ({ text: key, value: key }))
   ] : [];
 
   useAsyncEffect(async () => {
+    if (!productId) return;
+
     const data: any = await to(get(`products/${productId}`));
 
-    const product = {
+    const newProduct = {
       ...data[1],
       description: md.render(data[1]?.description || '')
     };
 
-    setProduct(product.sizes[0] ? formatProductSizes(product) : product)
+    setProduct(newProduct.sizes[0] ? formatProductSizes(newProduct) : newProduct)
   }, [productId])
 
   return (
     <div className="product">
       <div className="product__carousel">
         <Carousel
-          controls={product.image.data.length > 1}
-          interval={0}
+          controls={product.image?.data.length > 1}
+          interval={null}
         >
-          { product.image.data.map((image: any) => (
+          { product.image?.data.map((image: any) => (
             <Carousel.Item key={`slide-${image.url}`}>
               <img src={image.url} alt={image.url} />
             </Carousel.Item>

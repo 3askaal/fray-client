@@ -1,7 +1,7 @@
 import { Header } from '@/components'
 
-import '../assets/fonts/onyx/stylesheet.css'
-import './app.scss'
+import '../assets/fonts/onyx/stylesheet.css';
+import './app.scss';
 
 const App = ({ Component, pageProps }: any) => {
   return (

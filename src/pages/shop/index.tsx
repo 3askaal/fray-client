@@ -11,7 +11,7 @@ import './shop.scss';
 
 export const Shop = () => {
   const { get } = useApi();
-  const [ordering, setOrdering] = useState({ type: '', direction: '' });
+  const [ordering, setOrdering] = useState<{ type: string, direction: 'asc' | 'desc' }>({ type: 'publishedAt', direction: 'asc' });
   const [products, setProducts] = useState([]);
 
   useAsyncEffect(async () => {
@@ -56,7 +56,7 @@ export const Shop = () => {
                 <div className="products__item__image">
                   <Carousel
                     controls={product.image.data.length > 1}
-                    interval={0}
+                    interval={null}
                   >
                     { product.image.data.map((image: any) => (
                       <Carousel.Item key={`slide-${image.url}`}>

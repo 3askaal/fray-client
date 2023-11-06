@@ -16,8 +16,8 @@ export const Button = ({ children, to, block, disabled, size, state,type, onClic
       { children }
     </Link>
   ) : (
-    <Button type={type} className={className} onClick={onClick}>
+    <button type={type} className={className} onClick={onClick}>
       { children }
-    </Button>
+    </button>
   )
 }
