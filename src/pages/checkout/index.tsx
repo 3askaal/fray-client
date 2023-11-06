@@ -31,7 +31,7 @@ export const Checkout = () => {
 
   //   setProducts(
   //     data
-  //       .map((product: any) => product.sizes && product.sizes[0] ? formatProductPrice(product) : product)
+  //       .map((product: any) => product.sizes && product.sizes[0] ? formatProductSizes(product) : product)
   //       .map(({ sizes, ...product }: any) => ({
   //       ...product,
   //       sizes: sizes ? Object.keys(sizes).join(' / ') : null,

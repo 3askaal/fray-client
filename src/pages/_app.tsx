@@ -1,11 +1,17 @@
 import { Header } from '@/components'
+
+import '../assets/fonts/onyx/stylesheet.css'
 import './app.scss'
 
-export default function MyApp({ Component, pageProps }: any) {
+const App = ({ Component, pageProps }: any) => {
   return (
     <>
       <Header />
-      <Component {...pageProps} />
+      <div style={{ paddingTop: '200px', paddingBottom: '100px' }}>
+        <Component {...pageProps} />
+      </div>
     </>
   )
 }
+
+export default App

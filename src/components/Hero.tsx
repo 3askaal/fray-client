@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Play, Pause, CaretLeft, CaretRight, Fullscreen, FullscreenExit } from 'react-bootstrap-icons';
 import videojs from 'video.js'
-import { useApi } from '@/hooks/useApi';
 import style from './Hero.module.scss'
 import classNames from 'classnames';
 
@@ -20,9 +19,6 @@ export const Hero = ({ videos }: any) => {
   const init = () => {
     if (playerRef.current) return
     if (!videoRef.current) return
-
-    console.log('playerRef.current: ', playerRef.current);
-    console.log('videoRef.current: ', videoRef.current);
 
     playerRef.current = videojs(videoRef.current);
 

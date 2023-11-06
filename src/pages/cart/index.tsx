@@ -9,13 +9,13 @@ import './cart.scss';
 
 export const Cart = () => {
   const { remove, products }: any = useContext(CartContext);
-  const subTotal = products.reduce((accumulator: any, { price }: any) => accumulator + price, 0)
+  const subTotal = products?.reduce((accumulator: any, { price }: any) => accumulator + price, 0)
 
   return (
     <div className="cart mt-5">
       <div className="cart__products">
         <div className="container">
-          { products.length ? products.map((product: any) => (
+          { products?.length ? products.map((product: any) => (
             <Row className="cart__products__product" key={product.title}>
               <Col cols="3">
                 <a href={`/product/${product.id}`}>
@@ -58,7 +58,7 @@ export const Cart = () => {
         </div>
       </div>
 
-      { !!products.length && (
+      { !!products?.length && (
         <Row className="justify-content-end" v-if="products.length">
           <Col cols="5">
             <div className="d-flex justify-content-between mb-4">

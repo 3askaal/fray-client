@@ -9,7 +9,7 @@ const md = require('markdown-it')();
 import { useApi } from '@/hooks/useApi';
 import { CartContext } from '@/context/CartContext';
 import { Button } from '@/components';
-import { formatProductPrice } from '@/helpers';
+import { formatProductSizes } from '@/helpers';
 
 import './product.scss';
 
@@ -35,7 +35,7 @@ export const Product = () => {
       description: md.render(data[1]?.description || '')
     };
 
-    setProduct(product.sizes[0] ? formatProductPrice(product) : product)
+    setProduct(product.sizes[0] ? formatProductSizes(product) : product)
   }, [productId])
 
   return (

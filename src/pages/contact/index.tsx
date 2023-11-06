@@ -90,16 +90,16 @@ export const Contact = () => {
             <Row>
               <Col cols="6">
                 <p>Name</p>
-                <Form.Control name="name" onChange={(value: string) => setCommissionInfo({ ...commissionInfo, name: value })} />
+                <Form.Control name="name" onChange={(event) => setCommissionInfo({ ...commissionInfo, name: event.target.value })} />
               </Col>
               <Col cols="6">
                 <p>Email</p>
-                <Form.Control name="email" onChange={(value: string) => setCommissionInfo({ ...commissionInfo, email: value })} />
+                <Form.Control name="email" onChange={(event) => setCommissionInfo({ ...commissionInfo, email: event.target.value })} />
               </Col>
 
               <Col cols="12">
                 <p>Message</p>
-                <Form.Text as="textarea" rows={5} name="message" onChange={(value: string) => setCommissionInfo({ ...commissionInfo, message: value })} />
+                <Form.Text as="textarea" rows={5} name="message" onChange={(event) => setCommissionInfo({ ...commissionInfo, message: event.target.value })} />
               </Col>
             </Row>
             <Row className="justify-content-end">

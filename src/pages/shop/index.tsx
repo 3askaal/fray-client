@@ -6,7 +6,7 @@ import { useAsyncEffect } from 'rooks';
 import { orderBy } from 'lodash';
 
 import { useApi } from '@/hooks/useApi';
-import { formatProductPrice } from '@/helpers';
+import { formatProductSizes } from '@/helpers';
 import './shop.scss';
 
 export const Shop = () => {
@@ -17,16 +17,16 @@ export const Shop = () => {
   useAsyncEffect(async () => {
     const data = await get('products');
 
-    setProducts(
-      data
-        .map((product: any) => product.sizes && product.sizes[0] ? formatProductPrice(product) : product)
-        .map(({ sizes, ...product }: any) => ({
+    const newProducts = data
+      .map((product: any) => product.sizes && product.sizes[0] ? formatProductSizes(product) : product)
+      .map(({ sizes, ...product }: any) => ({
         ...product,
         sizes: sizes ? Object.keys(sizes).join(' / ') : null,
       }))
-    );
 
-    order();
+    setProducts(newProducts);
+
+    // order();
   }, [])
 
   const toggleOrder = () => {
@@ -42,7 +42,7 @@ export const Shop = () => {
     <div className="products">
       <div className="products__actions">
         <div className="products__actions__sort">
-          <Form.Select value={ordering.type} onChange={(value: string) => setOrdering({ ...ordering, type: value })} />
+          <Form.Select value={ordering.type} onChange={(event) => setOrdering({ ...ordering, type: event.target.value })} />
         </div>
         <div className="products__actions__order" onClick={toggleOrder}>
           { ordering.direction === 'asc' ? <ArrowDown font-scale="1.5" /> : <ArrowUp font-scale="1.5" /> }
