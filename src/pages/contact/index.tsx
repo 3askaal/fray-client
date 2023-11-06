@@ -11,7 +11,7 @@ import './contact.scss';
 
 export const Contact = () => {
   const { post } = useApi();
-  const [commissionInfo, setCommissionInfo] = useState({});
+  const [commissionInfo, setCommissionInfo] = useState<any>({});
   const [status, setStatus] = useState('');
 
   const isValid = () => {
@@ -28,6 +28,8 @@ export const Contact = () => {
     const [submitErr] = await to(post('commission/send', {
       commissionInfo: commissionInfo
     }))
+
+    console.log('submitErr: ', submitErr);
 
     if (submitErr) {
       setStatus('danger')
@@ -105,15 +107,28 @@ export const Contact = () => {
             <Row>
               <Col xs={6}>
                 <p>Name</p>
-                <Form.Control name="name" onChange={(event) => setCommissionInfo({ ...commissionInfo, name: event.target.value })} />
+                <Form.Control
+                  name="name"
+                  onChange={(event) => setCommissionInfo({ ...commissionInfo, name: event.target.value })}
+                  value={commissionInfo.name}
+                />
               </Col>
               <Col xs={6}>
                 <p>Email</p>
-                <Form.Control name="email" onChange={(event) => setCommissionInfo({ ...commissionInfo, email: event.target.value })} />
+                <Form.Control
+                  name="email"
+                  onChange={(event) => setCommissionInfo({ ...commissionInfo, email: event.target.value })}
+                  value={commissionInfo.email}
+                />
               </Col>
               <Col xs={12}>
                 <p>Message</p>
-                <Form.Control as="textarea" rows={5} name="message" onChange={(event) => setCommissionInfo({ ...commissionInfo, message: event.target.value })} />
+                <Form.Control
+                  as="textarea"
+                  rows={5} name="message"
+                  onChange={(event) => setCommissionInfo({ ...commissionInfo, message: event.target.value })}
+                  value={commissionInfo.message}
+                />
               </Col>
             </Row>
             <Row className="justify-content-end">

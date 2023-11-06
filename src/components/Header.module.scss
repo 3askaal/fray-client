@@ -33,12 +33,15 @@
 }
 
 .header__nav {
+  display: flex;
+  align-items: center;
   text-transform: uppercase;
 }
 
 .header__nav__item {
   position: relative;
   color: $black;
+  display: inline-flex;
   letter-spacing: .125rem;
   cursor: pointer;
   text-decoration: unset;

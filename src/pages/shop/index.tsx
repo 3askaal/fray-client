@@ -25,31 +25,32 @@ export const Shop = () => {
       }))
 
     setProducts(newProducts);
-
-    // order();
   }, [])
 
-  const toggleOrder = () => {
-    setOrdering({ ...ordering, direction: ordering.direction === 'asc' ? 'desc' : 'asc' });
-    order()
-  }
 
-  const order = () => {
-    setProducts(orderBy(products, [ordering.type], [ordering.direction]));
-  }
+  const orderOptions = [
+    { text: 'Date', value: 'publishedAt' },
+    { text: 'Price', value: 'price' },
+  ];
+
+  const orderedProducts = orderBy(products, [ordering.type], [ordering.direction]);
 
   return (
     <div className="products">
       <div className="products__actions">
         <div className="products__actions__sort">
-          <Form.Select value={ordering.type} onChange={(event) => setOrdering({ ...ordering, type: event.target.value })} />
+          <Form.Select value={ordering.type} onChange={(event) => setOrdering({ ...ordering, type: event.target.value })}>
+            { orderOptions.map((option) => (
+              <option key={option.value} value={option.value || ''}>{ option.text }</option>
+            )) }
+          </Form.Select>
         </div>
-        <div className="products__actions__order" onClick={toggleOrder}>
-          { ordering.direction === 'asc' ? <ArrowDown font-scale="1.5" /> : <ArrowUp font-scale="1.5" /> }
+        <div className="products__actions__order" onClick={() => setOrdering({ ...ordering, direction: ordering.direction === 'asc' ? 'desc' : 'asc' })}>
+          { ordering.direction === 'asc' ? <ArrowDown size="1.2rem" /> : <ArrowUp size="1.2rem" /> }
         </div>
       </div>
-      <Row className="m-0 aic">
-        { products.map((product: any) => (
+      <Row>
+        { orderedProducts.map((product: any) => (
           <Col sm="12" md="6" lg="4" className="products__item" key={product.id}>
             <Link href={`/product/${product.id}`}>
               { !!(product.image && product.image.data) && (

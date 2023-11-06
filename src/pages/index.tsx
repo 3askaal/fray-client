@@ -120,7 +120,7 @@ export const Home = () => {
   return (
     <div className="page">
       { !!videos.length && <Hero videos={videos} /> }
-      <div className="wrapper">
+      <div className="container">
         <div ref={bodyRef}>
           { sections.map((section: any, index: number) => (
             <Section key={index} className={section.type}>
