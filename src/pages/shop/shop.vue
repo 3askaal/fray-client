@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { formatProductPrice } from '../helpers';
+import { formatProductPrice } from '../../helpers';
 import { orderBy } from 'lodash';
 
 export default {
