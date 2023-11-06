@@ -1,0 +1,26 @@
+.status {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  align-items: center;
+  text-align: center;
+}
+
+.status__products {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.status__products__product {
+  display: flex;
+  justify-content: space-between;
+  width: 140%;
+}
+
+.status__order-extra {
+  margin-top: calc($spacer * 3);
+  color: $subtle;
+}

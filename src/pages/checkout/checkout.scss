@@ -1,0 +1,18 @@
+.checkout {
+  .row {
+    > * {
+      margin-bottom: $spacer;
+
+      p {
+        margin-bottom: calc($spacer * .5);
+      }
+    }
+  }
+}
+
+.checkout__form {
+  border-top: 1px solid $subtle;
+  border-bottom: 1px solid $subtle;
+  padding: calc($spacer * 3) 0;
+  margin-bottom: calc($spacer * 2);
+}

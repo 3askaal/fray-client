@@ -35,7 +35,7 @@ export const Cart = () => {
                 <div className="cart__products__product__title">
                   <a href={`/product/${product.id}`}>{ product.title }</a>
                 </div>
-                <p className="cart__products__product__size">Size: {{ product.size }}</p>
+                <p className="cart__products__product__size">Size: { product.size }</p>
                 <Button
                   size="s"
                   className="cart__products__product__remove"
