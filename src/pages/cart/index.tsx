@@ -50,7 +50,7 @@ export const Cart = () => {
             <Row>
               <Col>
                 <div className="cart__products__message">
-                  <p>No items in cart, go to our <Link href="/shop">shop</Link> page to see what's available for sale.</p>
+                  <p>No items in cart, go to our <Link href="/shop">shop</Link> page to see what&apos;s available for sale.</p>
                 </div>
               </Col>
             </Row>

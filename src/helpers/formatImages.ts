@@ -72,7 +72,7 @@ const imagesOverlap = (image1Corners: any, image2Corners: any) => {
   return image1Overlaps || image2Overlaps
 }
 
-export const getImageDimensions = (url: any) => {
+export const getImageDimensions = (url: any): Promise<any> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
 

@@ -49,7 +49,7 @@ export const Status = () => {
               </li>
             )) }
           </ul>
-          <p className="status__order-extra">You've received a confirmation email with further information.<br />For questions or requests please contact our support email.</p>
+          <p className="status__order-extra">You&apos;ve received a confirmation email with further information.<br />For questions or requests please contact our support email.</p>
         </>
       ) }
       { !!(status === 'error') && (

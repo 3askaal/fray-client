@@ -137,7 +137,7 @@ export const Checkout = () => {
                 </div>
               ) : (
                 <div className="d-flex justify-content-between">
-                  <p>We don't support international shipping via the website yet.<br />Please contact us if you want to order outside of the Netherlands.</p>
+                  <p>We don&apos;t support international shipping via the website yet.<br />Please contact us if you want to order outside of the Netherlands.</p>
                 </div>
               ) }
 
