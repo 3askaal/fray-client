@@ -1,4 +1,6 @@
-import { random } from 'lodash'
+import sequential from "promise-sequential"
+import { MutableRefObject } from "react"
+import { random } from "lodash"
 
 const getPositions = (image: any) => {
   return {
@@ -86,3 +88,60 @@ export const getImageDimensions = (url: any): Promise<any> => {
     img.src = url;
   });
 };
+
+export const createGallery = async (ref: MutableRefObject<HTMLElement>, imageUrls: string[]) => {
+  let galleryWidth = Math.round(ref.current!.getBoundingClientRect().width)
+  let galleryHeight = 500
+  let offsetY = 0
+
+  const placedImages: any = []
+
+  // position each image in sequence
+  const images = await sequential(imageUrls.map(({ smallUrl, largeUrl }: any) => async () => {
+
+    // assign random image dimensions and position
+    let image = await getRandomImagePosition(smallUrl, galleryWidth, galleryHeight, offsetY)
+
+    let tries = 0;
+    const maxTries = 20
+
+    // while image hits a previously placed image
+    while (imageHitsPlacedImages(image, placedImages)) {
+
+      // reassign random image dimensions and position
+      image = await getRandomImagePosition(smallUrl, galleryWidth, galleryHeight, offsetY)
+
+      // increment amount tries
+      tries++
+
+      // if placing image keeps failing, increase gallery height and reset tries
+      if (tries === maxTries) {
+        offsetY = galleryHeight
+        galleryHeight += image.height * 1.25
+        tries = 0
+      }
+    }
+
+    placedImages.push(image);
+
+    return {
+      smallUrl,
+      largeUrl,
+      width: image.width,
+      height: image.height,
+      style: {
+        position: 'absolute',
+        maxWidth: image.width + 'px',
+        maxHeight: image.height + 'px',
+        left: image.x + 'px',
+        top: image.y + 'px',
+        transform: `rotate(${image.rotate}deg)`,
+      }
+    }
+  }))
+
+  return {
+    images,
+    height: galleryHeight
+  }
+}

@@ -1,3 +1,3 @@
-export * from './formatImages'
-export * from './formatProduct'
-export * from './formatResponse'
+export * from './response'
+export * from './gallery'
+export * from './product'

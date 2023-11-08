@@ -7,8 +7,9 @@ import { orderBy } from 'lodash';
 
 import { useApi } from '@/hooks/useApi';
 import { formatProductSizes } from '@/helpers';
-import './shop.scss';
 import { HeadExtend } from '@/components/Head';
+
+import './shop.scss';
 
 export const Shop = () => {
   const { get } = useApi();
@@ -19,7 +20,7 @@ export const Shop = () => {
     const data = await get('products');
 
     const newProducts = data
-      .map((product: any) => product.sizes && product.sizes[0] ? formatProductSizes(product) : product)
+      .map((product: any) => product.sizes?.length ? formatProductSizes(product) : product)
       .map(({ sizes, ...product }: any) => ({
         ...product,
         sizes: sizes ? Object.keys(sizes).join(' / ') : null,

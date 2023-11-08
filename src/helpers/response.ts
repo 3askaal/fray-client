@@ -1,4 +1,4 @@
-const { transform, toPairs, isObject } = require('lodash')
+import { transform, toPairs, isObject } from 'lodash';
 
 const deepTransform = (obj: any, iterator: any) => transform(obj, (acc: any, val: any, key: any) => {
   // use the iterator and get a pair of key and value
