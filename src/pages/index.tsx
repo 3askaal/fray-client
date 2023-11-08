@@ -8,6 +8,8 @@ import { useApi } from '@/hooks/useApi';
 import Image from 'next/image';
 
 import './index.scss';
+import Head from 'next/head';
+import { HeadExtend } from '@/components/Head';
 
 export const Home = () => {
   const { get } = useApi();
@@ -118,43 +120,46 @@ export const Home = () => {
   }
 
   return (
-    <div className="page">
-      { !!videos.length && <Hero videos={videos} /> }
-      <div className="container">
-        <div ref={bodyRef}>
-          { sections.map((section: any, index: number) => (
-            <Section key={index} className={section.type}>
-              { section.gallery ? (
-                <div
-                  className={`gallery ${selectedImageIndex !== null ? 'gallery--selected' : ''}`}
-                  style={{ height: `${section.height}px` }}
-                >
-                  <div className="gallery__backdrop" onClick={() => clearPreviewImage()} />
-                  { section.images.map((image: any, imageIndex: number) => (
-                    <div
-                      key={`image-${index}`}
-                      className={`gallery__item ${selectedImageIndex === index ? 'gallery__item--selected' : ''}`}
-                      style={image.style}
-                      onClick={() => previewImage(imageIndex)}
-                    >
-                      <Image
-                        className={'gallery__item__image'}
-                        alt={image.smallUrl}
-                        src={selectedImageIndex === index ? image.largeUrl : image.smallUrl}
-                        width={image.width}
-                        height={image.height}
-                      />
-                    </div>
-                  )) }
-                </div>
-              ) : (
-                <div className="container--text container--center body body--center spacer" dangerouslySetInnerHTML={{ __html: section }} />
-              )}
-            </Section>
-          )) }
+    <>
+      <HeadExtend title="Home" />
+      <div className="page">
+        { !!videos.length && <Hero videos={videos} /> }
+        <div className="container">
+          <div ref={bodyRef}>
+            { sections.map((section: any, index: number) => (
+              <Section key={index} className={section.type}>
+                { section.gallery ? (
+                  <div
+                    className={`gallery ${selectedImageIndex !== null ? 'gallery--selected' : ''}`}
+                    style={{ height: `${section.height}px` }}
+                  >
+                    <div className="gallery__backdrop" onClick={() => clearPreviewImage()} />
+                    { section.images.map((image: any, imageIndex: number) => (
+                      <div
+                        key={`image-${index}`}
+                        className={`gallery__item ${selectedImageIndex === index ? 'gallery__item--selected' : ''}`}
+                        style={image.style}
+                        onClick={() => previewImage(imageIndex)}
+                      >
+                        <Image
+                          className={'gallery__item__image'}
+                          alt={image.smallUrl}
+                          src={selectedImageIndex === index ? image.largeUrl : image.smallUrl}
+                          width={image.width}
+                          height={image.height}
+                        />
+                      </div>
+                    )) }
+                  </div>
+                ) : (
+                  <div className="container--text container--center body body--center spacer" dangerouslySetInnerHTML={{ __html: section }} />
+                )}
+              </Section>
+            )) }
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

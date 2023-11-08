@@ -7,6 +7,7 @@ import to from 'await-to-js';
 import { useApi } from '@/hooks/useApi';
 
 import './status.scss';
+import { HeadExtend } from '@/components/Head';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
@@ -32,32 +33,35 @@ export const Status = () => {
   }, [sessionId])
 
   return (
-    <div className="status spacer">
-      { !!(status === 'pending') && (
-        <h1 className="status__title">Your order is being processed!</h1>
-      ) }
-      { !!(status === 'success') && (
-        <>
-          <h1 className="status__title">Payment Completed</h1>
-          <p className="status__order-desc">Your order with Order ID: #{ order.id } was successful.</p>
-          <ul className="status__products">
-            { order.products.map((product: any) => (
-              <li className="status__products__product" key={product.id}>
-                <span>{ product.title }</span>
-                <span>-</span>
-                <span>€ { product.price }</span>
-              </li>
-            )) }
-          </ul>
-          <p className="status__order-extra">You&apos;ve received a confirmation email with further information.<br />For questions or requests please contact our support email.</p>
-        </>
-      ) }
-      { !!(status === 'error') && (
-        <>
-          <h1 className="status__title">Payment Failed</h1>
-        </>
-      ) }
-    </div>
+    <>
+      <HeadExtend title="Status" />
+      <div className="status spacer">
+        { !!(status === 'pending') && (
+          <h1 className="status__title">Your order is being processed!</h1>
+        ) }
+        { !!(status === 'success') && (
+          <>
+            <h1 className="status__title">Payment Completed</h1>
+            <p className="status__order-desc">Your order with Order ID: #{ order.id } was successful.</p>
+            <ul className="status__products">
+              { order.products.map((product: any) => (
+                <li className="status__products__product" key={product.id}>
+                  <span>{ product.title }</span>
+                  <span>-</span>
+                  <span>€ { product.price }</span>
+                </li>
+              )) }
+            </ul>
+            <p className="status__order-extra">You&apos;ve received a confirmation email with further information.<br />For questions or requests please contact our support email.</p>
+          </>
+        ) }
+        { !!(status === 'error') && (
+          <>
+            <h1 className="status__title">Payment Failed</h1>
+          </>
+        ) }
+      </div>
+    </>
   )
 }
 

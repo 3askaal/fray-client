@@ -9,6 +9,7 @@ import { CartContext } from '@/context/CartContext';
 import { useApi } from '@/hooks/useApi';
 
 import './checkout.scss';
+import { HeadExtend } from '@/components/Head';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
 
@@ -79,78 +80,81 @@ export const Checkout = () => {
   const isInternational = !['nl', 'ned', 'netherlands', 'the netherlands', 'holland'].includes(customerInfo.country.toLowerCase());
 
   return (
-    <div className="checkout mt-5">
-      <div className="checkout__form">
-        <Row>
-          <Col xs="6">
-            <p>First Name</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
-          </Col>
-          <Col xs="6">
-            <p>Last Name</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
-          </Col>
+    <>
+      <HeadExtend title="Checkout" />
+      <div className="checkout mt-5">
+        <div className="checkout__form">
+          <Row>
+            <Col xs="6">
+              <p>First Name</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
+            </Col>
+            <Col xs="6">
+              <p>Last Name</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
+            </Col>
 
-          <Col xs="6">
-            <p>Street Address</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
-          </Col>
-          <Col xs="6">
-            <p>House Number</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
-          </Col>
+            <Col xs="6">
+              <p>Street Address</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
+            </Col>
+            <Col xs="6">
+              <p>House Number</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
+            </Col>
 
-          <Col xs="6">
-            <p>Postal Code</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
-          </Col>
-          <Col xs="6">
-            <p>Country</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
-          </Col>
+            <Col xs="6">
+              <p>Postal Code</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
+            </Col>
+            <Col xs="6">
+              <p>Country</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
+            </Col>
 
-          <Col xs="6">
-            <p>Email</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
-          </Col>
-          <Col xs="6">
-            <p>Phone Number</p>
-            <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
-          </Col>
-        </Row>
+            <Col xs="6">
+              <p>Email</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
+            </Col>
+            <Col xs="6">
+              <p>Phone Number</p>
+              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
+            </Col>
+          </Row>
+        </div>
+
+
+        { products.length && (
+          <Row className="justify-content-end">
+            <Col xs="5">
+              <Stack gap={4}>
+                <div className="d-flex justify-content-between">
+                  <p><strong>Subtotal:</strong></p>
+                  <p><strong>{ subTotal() }</strong></p>
+                </div>
+
+                { !!(!customerInfo.country.length || !isInternational) ? (
+                  <div className="d-flex justify-content-between">
+                    <p><strong>Shipping:</strong></p>
+                    <p><strong>{ shipping }</strong></p>
+                  </div>
+                ) : (
+                  <div className="d-flex justify-content-between">
+                    <p>We don&apos;t support international shipping via the website yet.<br />Please contact us if you want to order outside of the Netherlands.</p>
+                  </div>
+                ) }
+
+                <div className="d-flex justify-content-between">
+                  <p><strong>Total:</strong></p>
+                  <p><strong>{ total() }</strong></p>
+                </div>
+              </Stack>
+              <Button block={true} disabled={!isValid} variant="primary" className="checkout__submit" onClick={submit}>Checkout</Button>
+            </Col>
+          </Row>
+        )}
       </div>
-
-
-      { products.length && (
-        <Row className="justify-content-end">
-          <Col xs="5">
-            <Stack gap={4}>
-              <div className="d-flex justify-content-between">
-                <p><strong>Subtotal:</strong></p>
-                <p><strong>{ subTotal() }</strong></p>
-              </div>
-
-              { !!(!customerInfo.country.length || !isInternational) ? (
-                <div className="d-flex justify-content-between">
-                  <p><strong>Shipping:</strong></p>
-                  <p><strong>{ shipping }</strong></p>
-                </div>
-              ) : (
-                <div className="d-flex justify-content-between">
-                  <p>We don&apos;t support international shipping via the website yet.<br />Please contact us if you want to order outside of the Netherlands.</p>
-                </div>
-              ) }
-
-              <div className="d-flex justify-content-between">
-                <p><strong>Total:</strong></p>
-                <p><strong>{ total() }</strong></p>
-              </div>
-            </Stack>
-            <Button block={true} disabled={!isValid} variant="primary" className="checkout__submit" onClick={submit}>Checkout</Button>
-          </Col>
-        </Row>
-      )}
-    </div>
+    </>
   )
 }
 
