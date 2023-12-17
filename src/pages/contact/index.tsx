@@ -58,7 +58,7 @@ export const Contact = () => {
   return (
     <>
       <HeadExtend title="Contact" />
-      <div className="contact">
+      <div>
         <div className="container--text">
           <h2 className="page-title">Contact</h2>
           <div className="spacer mt-5">

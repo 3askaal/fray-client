@@ -1,10 +1,10 @@
 import { Header } from '@/components'
 import { useRouter } from 'next/router';
 import { CartProvider } from '@/context/CartContext';
+import classNames from 'classnames';
 
 import '../assets/fonts/onyx/stylesheet.css';
 import './app.scss';
-import classNames from 'classnames';
 
 const App = ({ Component, pageProps }: any) => {
   const { pathname } = useRouter();
@@ -12,7 +12,7 @@ const App = ({ Component, pageProps }: any) => {
   return (
     <CartProvider>
       <Header />
-      <div className={classNames({ wrapper: pathname !== '/'})}>
+      <div className={classNames({ wrapper: pathname !== '/', contact: pathname === '/contact' })}>
         <Component {...pageProps} />
       </div>
     </CartProvider>

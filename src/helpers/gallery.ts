@@ -2,7 +2,7 @@ import sequential from "promise-sequential"
 import { MutableRefObject } from "react"
 import { random } from "lodash"
 
-const getPositions = (image: any) => {
+const getCornerPositions = (image: any) => {
   return {
     topLeft: { x: image.x, y: image.y },
     topRight: { x: image.x + image.width, y: image.y },
@@ -12,7 +12,7 @@ const getPositions = (image: any) => {
   }
 }
 
-export const getRandomImagePosition = async (url: any, canvasWidth: any, canvasHeight: any, offsetY: any) => {
+export const getRandomPlacement = async (url: any, canvasWidth: any, canvasHeight: any, offsetY: any) => {
   const { width, height } = await getImageDimensions(url)
 
   const randomIncreaseValue = random(20, 80) / 100
@@ -32,7 +32,7 @@ export const getRandomImagePosition = async (url: any, canvasWidth: any, canvasH
   }
 }
 
-export const imageHitsCorner = (image: any, canvasWidth: any, canvasHeight: any) => {
+export const hitsCorner = (image: any, canvasWidth: any, canvasHeight: any) => {
   const cornerY = 0
   const cornerX = 0
 
@@ -44,31 +44,29 @@ export const imageHitsCorner = (image: any, canvasWidth: any, canvasHeight: any)
   })
 }
 
-export const imageHitsPlacedImages = (image: any, placedImages: any) => {
-  const imageCorners = getPositions(image)
+export const hitsPlacedImages = (image: any, placedImages: any, offset?: number) => {
+  const imageCorners = getCornerPositions(image)
 
   return placedImages.some((placedImage: any) => {
-    const placedImageCorners = getPositions(placedImage)
+    const placedImageCorners = getCornerPositions(placedImage)
 
-    return imagesOverlap(imageCorners, placedImageCorners)
+    return imagesOverlap(imageCorners, placedImageCorners, offset)
   })
 }
 
-const imagesOverlap = (image1Corners: any, image2Corners: any) => {
-  const offset = 0
-
+const imagesOverlap = (image1Corners: any, image2Corners: any, offset: number = 0) => {
   const image1Overlaps = Object.entries(image1Corners).some(([key, corner]: any) => {
-    return corner.x > (image2Corners.topLeft.x - offset) &&
-      corner.y > (image2Corners.topLeft.y - offset) &&
-      corner.y < (image2Corners.bottomRight.y + offset) &&
-      corner.x < (image2Corners.bottomRight.x + offset);
+    return corner.x > (image2Corners.topLeft.x + offset) &&
+      corner.y > (image2Corners.topLeft.y + offset) &&
+      corner.y < (image2Corners.bottomRight.y - offset) &&
+      corner.x < (image2Corners.bottomRight.x - offset);
   })
 
   const image2Overlaps = Object.entries(image2Corners).some(([key, corner]: any) => {
-    return corner.x > (image1Corners.topLeft.x - offset) &&
-      corner.y > (image1Corners.topLeft.y - offset) &&
-      corner.y < (image1Corners.bottomRight.y + offset) &&
-      corner.x < (image1Corners.bottomRight.x + offset);
+    return corner.x > (image1Corners.topLeft.x + offset) &&
+      corner.y > (image1Corners.topLeft.y + offset) &&
+      corner.y < (image1Corners.bottomRight.y - offset) &&
+      corner.x < (image1Corners.bottomRight.x - offset);
   })
 
   return image1Overlaps || image2Overlaps
@@ -100,16 +98,16 @@ export const createGallery = async (ref: MutableRefObject<HTMLElement>, imageUrl
   const images = await sequential(imageUrls.map(({ smallUrl, largeUrl }: any) => async () => {
 
     // assign random image dimensions and position
-    let image = await getRandomImagePosition(smallUrl, galleryWidth, galleryHeight, offsetY)
+    let image = await getRandomPlacement(smallUrl, galleryWidth, galleryHeight, offsetY)
 
     let tries = 0;
     const maxTries = 20
 
     // while image hits a previously placed image
-    while (imageHitsPlacedImages(image, placedImages)) {
+    while (hitsPlacedImages(image, placedImages, 20)) {
 
       // reassign random image dimensions and position
-      image = await getRandomImagePosition(smallUrl, galleryWidth, galleryHeight, offsetY)
+      image = await getRandomPlacement(smallUrl, galleryWidth, galleryHeight, offsetY)
 
       // increment amount tries
       tries++
