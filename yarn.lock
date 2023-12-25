@@ -3633,7 +3633,7 @@ rimraf@^3.0.2:
 
 rooks@^7.14.1:
   version "7.14.1"
-  resolved "https://registry.npmjs.org/rooks/-/rooks-7.14.1.tgz"
+  resolved "https://registry.yarnpkg.com/rooks/-/rooks-7.14.1.tgz#f3660752c299da02eb6cc733c55f8270c3376a87"
   integrity sha512-oPuLNGm3OaFm3WfZHzmDvJvRit8QrXGm9/Kn49Bz8lJUjkThSBtERWzuQ9wb5DveqrpUZvmNyBXjBE0KWVt13w==
   dependencies:
     fast-deep-equal "^3.1.3"

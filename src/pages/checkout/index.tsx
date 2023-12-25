@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Row, Stack } from 'react-bootstrap';
 import { loadStripe } from '@stripe/stripe-js';
 import to from 'await-to-js';
@@ -10,21 +10,85 @@ import { useApi } from '@/hooks/useApi';
 
 import './checkout.scss';
 import { HeadExtend } from '@/components/Head';
+import axios from 'axios';
+import { useAsyncEffect } from 'rooks';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
+
+
+const getShippingMethods = async (query: any) => {
+  const [getShippingMethodsError, getShippingMethodsSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/shipping_methods?${stringify(query)}`, {
+    auth: {
+      username: process.env.sendcloudUsername || '',
+      password: process.env.sendcloudPassword || ''
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Accept': 'application/json',
+    },
+    withCredentials: true,
+  }));
+
+
+  console.log('getShippingMethodsError: ', getShippingMethodsError);
+  console.log('getShippingMethodsSuccess: ', getShippingMethodsSuccess);
+
+  return getShippingMethodsSuccess
+}
+
+const getSenderAddress = async () => {
+  const [getSenderAddressError, getSenderAddressSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/user/addresses/sender`, {
+    auth: {
+      username: process.env.sendcloudUsername || '',
+      password: process.env.sendcloudPassword || ''
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Accept': 'application/json',
+    },
+    withCredentials: true,
+  }));
+
+  console.log('getSenderAddressError: ', getSenderAddressError);
+  console.log('getSenderAddressSuccess: ', getSenderAddressSuccess);
+
+  return getSenderAddressSuccess;
+}
+
+const getShippingPrice = async (query: any) => {
+  const [getShippingPriceError, getShippingPriceSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/shipping-price${stringify(query)}`, {
+    auth: {
+      username: process.env.sendcloudUsername || '',
+      password: process.env.sendcloudPassword || ''
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Accept': 'application/json',
+    },
+    withCredentials: true,
+  }));
+
+  console.log('getShippingPriceError: ', getShippingPriceError);
+  console.log('getShippingPriceSuccess: ', getShippingPriceSuccess);
+
+  return getShippingPriceSuccess
+}
 
 export const Checkout = () => {
   const { post } = useApi();
   const { remove, products }: any = useContext(CartContext);
   const [customerInfo, setCustomerInfo] = useState({
-    name: '',
-    lastName: '',
-    streetAddress: '',
-    houseNumber: '',
-    postalCode: '',
+    name: 'Lorem',
+    lastName: 'Ipsum',
+    streetAddress: 'Nestelmakerstraat',
+    houseNumber: '49',
+    postalCode: '4813KA',
     country: 'The Netherlands',
-    email: '',
-    phoneNumber: ''
+    email: 'loremipsum@gmail.com',
+    phoneNumber: '0612345678'
   });
 
   // useAsyncEffect(async () => {
@@ -41,6 +105,30 @@ export const Checkout = () => {
 
   //   order();
   // }, [])
+
+  useAsyncEffect(async () => {
+    const senderAddressId = await getSenderAddress()
+    console.log('senderAddressId: ', senderAddressId);
+
+    // const test = await getShippingMethods({
+    //   from_postal_code: customerInfo.postalCode,
+    //   is_return: false,
+    //   sender_address: '365674',
+    //   service_point_id: 10875349,
+    //   to_country: 'NL',
+    //   to_postal_code: '1092AT',
+    // })
+
+    // console.log('test: ', test);
+
+    // getShippingPrice({
+    //   from_country: 'NL',
+    //   to_country: this.customerInfo.country,
+    //   shipping_method_id: 0,
+    //   weight: 0.5,
+    //   weight_unit: 'kilogram'
+    // })
+  }, [customerInfo])
 
   const submit = async () => {
     const stripe: any = await stripePromise;
@@ -87,38 +175,38 @@ export const Checkout = () => {
           <Row>
             <Col xs="6">
               <p>First Name</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
+              <Form.Control defaultValue={customerInfo.name} onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
             </Col>
             <Col xs="6">
               <p>Last Name</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
+              <Form.Control defaultValue={customerInfo.lastName} onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
             </Col>
 
             <Col xs="6">
               <p>Street Address</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
+              <Form.Control defaultValue={customerInfo.streetAddress} onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
             </Col>
             <Col xs="6">
               <p>House Number</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
+              <Form.Control defaultValue={customerInfo.houseNumber} onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
             </Col>
 
             <Col xs="6">
               <p>Postal Code</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
+              <Form.Control defaultValue={customerInfo.postalCode} onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
             </Col>
             <Col xs="6">
               <p>Country</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
+              <Form.Control defaultValue={customerInfo.country} onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
             </Col>
 
             <Col xs="6">
               <p>Email</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
+              <Form.Control defaultValue={customerInfo.email} onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
             </Col>
             <Col xs="6">
               <p>Phone Number</p>
-              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
+              <Form.Control defaultValue={customerInfo.phoneNumber} onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
             </Col>
           </Row>
         </div>
