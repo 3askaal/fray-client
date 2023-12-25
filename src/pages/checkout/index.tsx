@@ -87,38 +87,38 @@ export const Checkout = () => {
           <Row>
             <Col xs="6">
               <p>First Name</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, name: value })} />
             </Col>
             <Col xs="6">
               <p>Last Name</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, lastName: value })} />
             </Col>
 
             <Col xs="6">
               <p>Street Address</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, streetAddress: value })} />
             </Col>
             <Col xs="6">
               <p>House Number</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, houseNumber: value })} />
             </Col>
 
             <Col xs="6">
               <p>Postal Code</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, postalCode: value })} />
             </Col>
             <Col xs="6">
               <p>Country</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, country: value })} />
             </Col>
 
             <Col xs="6">
               <p>Email</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, email: value })} />
             </Col>
             <Col xs="6">
               <p>Phone Number</p>
-              <Form.Text onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
+              <Form.Control onChange={(value: any) => setCustomerInfo({ ...customerInfo, phoneNumber: value })} />
             </Col>
           </Row>
         </div>
@@ -130,7 +130,7 @@ export const Checkout = () => {
               <Stack gap={4}>
                 <div className="d-flex justify-content-between">
                   <p><strong>Subtotal:</strong></p>
-                  <p><strong>{ subTotal() }</strong></p>
+                  <p><strong>{ subTotal }</strong></p>
                 </div>
 
                 { !!(!customerInfo.country.length || !isInternational) ? (
@@ -146,7 +146,7 @@ export const Checkout = () => {
 
                 <div className="d-flex justify-content-between">
                   <p><strong>Total:</strong></p>
-                  <p><strong>{ total() }</strong></p>
+                  <p><strong>{ total }</strong></p>
                 </div>
               </Stack>
               <Button block={true} disabled={!isValid} variant="primary" className="checkout__submit" onClick={submit}>Checkout</Button>
