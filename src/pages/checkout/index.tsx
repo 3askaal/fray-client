@@ -1,74 +1,73 @@
 import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Row, Stack } from 'react-bootstrap';
-import { loadStripe } from '@stripe/stripe-js';
+import { useAsyncEffect } from 'rooks';
+import axios from 'axios';
 import to from 'await-to-js';
 import isEmail from 'validator/lib/isEmail';
+import { loadStripe } from '@stripe/stripe-js';
 
 import { Button } from '@/components';
+import { HeadExtend } from '@/components/Head';
 import { CartContext } from '@/context/CartContext';
 import { useApi } from '@/hooks/useApi';
 
 import './checkout.scss';
-import { HeadExtend } from '@/components/Head';
-import axios from 'axios';
-import { useAsyncEffect } from 'rooks';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || '');
-
-
-const getShippingMethods = async (query: any) => {
-  const [getShippingMethodsError, getShippingMethodsSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/shipping_methods?${stringify(query)}`, {
-    auth: {
-      username: process.env.sendcloudUsername || '',
-      password: process.env.sendcloudPassword || ''
-    },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
-      'Accept': 'application/json',
-    },
-    withCredentials: true,
-  }));
-
-
-  console.log('getShippingMethodsError: ', getShippingMethodsError);
-  console.log('getShippingMethodsSuccess: ', getShippingMethodsSuccess);
-
-  return getShippingMethodsSuccess
-}
+const usernamePasswordBuffer = Buffer.from(`${process.env.NEXT_PUBLIC_SENDCLOUD_PUBLIC}:${process.env.NEXT_PUBLIC_SENDCLOUD_SECRET}`);
+const base64data = usernamePasswordBuffer.toString('base64');
 
 const getSenderAddress = async () => {
   const [getSenderAddressError, getSenderAddressSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/user/addresses/sender`, {
-    auth: {
-      username: process.env.sendcloudUsername || '',
-      password: process.env.sendcloudPassword || ''
-    },
     headers: {
+      'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
-      'Accept': 'application/json',
+      'Authorization': `Basic ${base64data}`,
     },
-    withCredentials: true,
+    withCredentials: false,
   }));
 
-  console.log('getSenderAddressError: ', getSenderAddressError);
+  console.error('getSenderAddressError: ', getSenderAddressError);
   console.log('getSenderAddressSuccess: ', getSenderAddressSuccess);
 
   return getSenderAddressSuccess;
 }
 
+const getShippingMethods = async (query: any) => {
+  const [getShippingMethodsError, getShippingMethodsSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/shipping_methods?${stringify(query)}`, {
+    auth: {
+      username: process.env.NEXT_PUBLIC_SENDCLOUD_PUBLIC || '',
+      password: process.env.NEXT_PUBLIC_SENDCLOUD_SECRET || ''
+    },
+    headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Credentials': 'true',
+    //   'Accept': 'application/json',
+    },
+    // withCredentials: true,
+  }));
+
+
+  console.error('getShippingMethodsError: ', getShippingMethodsError?.message);
+  console.log('getShippingMethodsSuccess: ', getShippingMethodsSuccess);
+
+  return getShippingMethodsSuccess
+}
+
+
+
 const getShippingPrice = async (query: any) => {
   const [getShippingPriceError, getShippingPriceSuccess] = await to(axios.get(`https://panel.sendcloud.sc/api/v2/shipping-price${stringify(query)}`, {
     auth: {
-      username: process.env.sendcloudUsername || '',
-      password: process.env.sendcloudPassword || ''
+      username: process.env.NEXT_PUBLIC_SENDCLOUD_PUBLIC || '',
+      password: process.env.NEXT_PUBLIC_SENDCLOUD_SECRET || ''
     },
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': 'true',
-      'Accept': 'application/json',
-    },
-    withCredentials: true,
+    // headers: {
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Credentials': 'true',
+    //   'Accept': 'application/json',
+    // },
+    // withCredentials: true,
   }));
 
   console.log('getShippingPriceError: ', getShippingPriceError);
@@ -79,7 +78,9 @@ const getShippingPrice = async (query: any) => {
 
 export const Checkout = () => {
   const { post } = useApi();
-  const { remove, products }: any = useContext(CartContext);
+  // const { remove, products }: any = useContext(CartContext);
+  const products: any[] = [];
+
   const [customerInfo, setCustomerInfo] = useState({
     name: 'Lorem',
     lastName: 'Ipsum',
@@ -113,7 +114,7 @@ export const Checkout = () => {
     // const test = await getShippingMethods({
     //   from_postal_code: customerInfo.postalCode,
     //   is_return: false,
-    //   sender_address: '365674',
+    //   sender_address: senderAddressId,
     //   service_point_id: 10875349,
     //   to_country: 'NL',
     //   to_postal_code: '1092AT',
